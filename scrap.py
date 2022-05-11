@@ -16,20 +16,23 @@ class DollarBlueScrap:
         table = soup.find("table", attrs={"id":"BluePromedio"})
         title = table.find("td", attrs={"class":"colNombre"}).text
         date = table.find("td", attrs={"class":"colFecha"}).text
-        
-        buy = table.find_next("td", attrs={"class":"colCompraVenta"}).contents
-        sell = table.find_previous("td", attrs={"class":"colCompraVenta"}).contents
-
         variation = table.find("td", attrs={"class":"colVariacion"}).text
+        
+        prices = table.find_all("td", attrs={"class":"colCompraVenta"})
+        values = []
+
+        for price in prices:
+            values.append(price.contents[0])
+
 
         data = {
             'title': title,
             'date': date,
             'values' : {
-                'buy': buy[0],
-                'sell': sell[0]
+                'buy': values[0],
+                'sell': values[1]
             },
-            'variation': variation
+            'variation': variation,
         }
 
         return data
@@ -66,9 +69,3 @@ class DollarOficialScrap:
         }
 
         return data
-
-
-        
-
-    
-    
